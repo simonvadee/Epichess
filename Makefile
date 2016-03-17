@@ -4,9 +4,9 @@ CC		=		g++
 
 RM		=		rm -f
 
-SRC		=		./src
+SRC		=		./server/src
 
-INC		=		./includes
+INC		=		./server/includes
 
 CXXFLAGS	=		-I./$(INC) --std=c++11
 
