@@ -8,7 +8,7 @@ SRC		=		./src
 
 INC		=		./includes
 
-CXXFLAGS	=		-I./$(INC) --std=c++11 -lboost_system
+CXXFLAGS	=		-I./$(INC) --std=c++11
 
 SRCS		=		$(SRC)/server.cpp
 
@@ -17,7 +17,7 @@ OBJ		=		$(SRCS:.cpp=.o)
 all:				$(NAME)
 
 $(NAME):			$(OBJ)
-				$(CC) $(OBJ) $(CXXFLAGS) -o $(NAME)
+				$(CC) -o $(NAME) $(OBJ) -lboost_system
 
 clean:
 				$(RM) $(OBJ)
