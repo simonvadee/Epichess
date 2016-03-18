@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <memory>
 #include <utility>
 #include <boost/asio.hpp>
@@ -33,6 +34,7 @@ private:
   char*			_response;
   size_t		_responseLength;
 
-  std::string		data;
+  char*			_data;
+
   std::string		toGet;
 };

@@ -50,7 +50,10 @@ void			Session::do_parse(std::size_t length)
   std::cout << "REQUEST: " << toGet << std::endl;
   std::string	file = "./client/serve" + toGet;
 
-  ifs.open(file, std::ifstream::in);
+  if (toGet.find("png") != std::string::npos)
+    ifs.open(file, std::ifstream::in | std::ios::binary);
+  else
+    ifs.open(file, std::ifstream::in);
   if (ifs.is_open())
     {
       ifs.seekg(0, ifs.end);
@@ -64,8 +67,9 @@ void			Session::do_parse(std::size_t length)
   else
     {
       std::cerr << "file not found !!" << std::endl;
-      data = "HTTP/1.1 404 NOT FOUND\r\n\r\n";
-      do_write(data.size());
+      _data = new char[strlen("HTTP/1.1 404 NOT FOUND\r\n\r\n")];
+      strcat(_data, "HTTP/1.1 404 NOT FOUND\r\n\r\n");
+      do_write(strlen(_data));
     }
   do_read();
 }
@@ -73,13 +77,11 @@ void			Session::do_parse(std::size_t length)
 void			Session::do_write(size_t length)
 {
   auto self(shared_from_this());
-  boost::asio::async_write(_socket, boost::asio::buffer(data.c_str(), length),
+  boost::asio::async_write(_socket, boost::asio::buffer(test, length),
   			   [this, self](boost::system::error_code ec, std::size_t bytesTransfered)
   			   {
   			     if (!ec)
   			       {
-  				 // std::cout << "REQUEST: " << _request << std::endl;
-  				 // std::cout << "RESPONSE: " << data << std::endl;
   				 memset(_request, 0, max_length);
   			       }
   			   });
@@ -88,10 +90,24 @@ void			Session::do_write(size_t length)
 size_t			Session::make_header()
 {
   size_t		ret = 0;
-  data = "HTTP/1.1 200 OK\r\nContent-Length: " + std::to_string(_responseLength) + "\r\n\r\n";
-  ret = data.size() + 2;
-  data += _response;
-  data += "\r\n\r\n";
-  std::cout << "send " << ret + _responseLength << std::endl << data.substr(0, data.find("\r\n\r\n")) << std::endl << std::endl;
+  std::string		header;
+  unsigned int		j = 0;
+
+  header = "HTTP/1.1 200 OK\r\n";
+  if (toGet.find("png") != std::string::npos)
+    header += "Content-Type: image/png\r\n";
+  header += "Content-Length: " + std::to_string(_responseLength) + "\r\n\r\n";
+
+  ret = header.size() + 2;
+
+  test = new char[ret + _responseLength];
+  strcat(test, header.c_str());
+  for (unsigned int i = header.size(); i != ret + _responseLength - 1; ++i)
+    {
+      test[i] = _response[j];
+      ++j;
+    }
+  std::cout  << std::endl;
+  std::cout << "send " << ret + _responseLength << std::endl << header << std::endl << std::endl;
   return ret + _responseLength;
 }
