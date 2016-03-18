@@ -67,7 +67,8 @@ void			Session::do_parse(std::size_t length)
   else
     {
       std::cerr << "file not found !!" << std::endl;
-      _data = new char[strlen("HTTP/1.1 404 NOT FOUND\r\n\r\n")];
+      _data = new char[strlen("HTTP/1.1 404 NOT FOUND\r\n\r\n") + 1];
+      memset(_data, 0, strlen("HTTP/1.1 404 NOT FOUND\r\n\r\n"));
       strcat(_data, "HTTP/1.1 404 NOT FOUND\r\n\r\n");
       do_write(strlen(_data));
     }
@@ -77,7 +78,7 @@ void			Session::do_parse(std::size_t length)
 void			Session::do_write(size_t length)
 {
   auto self(shared_from_this());
-  boost::asio::async_write(_socket, boost::asio::buffer(test, length),
+  boost::asio::async_write(_socket, boost::asio::buffer(_data, length),
   			   [this, self](boost::system::error_code ec, std::size_t bytesTransfered)
   			   {
   			     if (!ec)
@@ -100,11 +101,12 @@ size_t			Session::make_header()
 
   ret = header.size() + 2;
 
-  test = new char[ret + _responseLength];
-  strcat(test, header.c_str());
+  _data = new char[ret + _responseLength];
+  memset(_data, 0, ret + _responseLength);
+  strcat(_data, header.c_str());
   for (unsigned int i = header.size(); i != ret + _responseLength - 1; ++i)
     {
-      test[i] = _response[j];
+      _data[i] = _response[j];
       ++j;
     }
   std::cout  << std::endl;
