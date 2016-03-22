@@ -6,7 +6,7 @@ namespace FEN
 
 bool		is_valid(std::string const& fen)
 {
-  unsigned int	rowCount = 1;
+  unsigned int	rowCount = 0;
   unsigned int	spaceCount = 0;
 
   for (size_t i = 0; i < fen.size(); ++i)
@@ -16,8 +16,8 @@ bool		is_valid(std::string const& fen)
       else if (fen[i] == ' ')
 	++spaceCount;
     }
-  if (rowCount != 8
-      || spaceCount != 5)
+  if (rowCount != 8)
+  //     || spaceCount != 5)
     return false;
   return true;
 }

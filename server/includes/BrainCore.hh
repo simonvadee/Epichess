@@ -2,6 +2,8 @@
 # define BRAINCORE_HH_
 
 # include <vector>
+# include <cstring>
+
 # include "ChessBoard.hh"
 
 # define MAXINT 2147483647
@@ -25,10 +27,10 @@ private:
 
 public:
   void			fillMap(char pawn);
-  void			genFenMap();
+  char*			genFenMap();
   char*			genMoveCode();
-  void			generate(char *coded);
-  void			fightBack(char *map);
+  void			generate(std::string const&);
+  char*			fightBack(std::string const& fen);
   int			minMax(int depth, char **map, bool turn);
   void			displayMap();
 };
