@@ -4,13 +4,15 @@ CC		=		g++
 
 RM		=		rm -f
 
-SRC		=		./src
+SRC		=		./server/src
 
-INC		=		./includes
+INC		=		./server/includes
 
-CXXFLAGS	=		-I./$(INC) --std=c++11
+CXXFLAGS	=		-I./$(INC) --std=c++11 -g3
 
-SRCS		=		$(SRC)/server.cpp
+SRCS		=		$(SRC)/Server.cpp \
+				$(SRC)/Session.cpp \
+				$(SRC)/main.cpp
 
 OBJ		=		$(SRCS:.cpp=.o)
 
