@@ -38,7 +38,8 @@ var onSnapEnd = function() {
     board.position(game.fen());
     $.get(fen, function(data, status) {
 	console.log(data);
-	board.position(data);
+	board.move("f7-f6");
+	// board.position(data);
     });
 };
 
@@ -118,7 +119,6 @@ $('#lool').on('click', function() {
     
     console.log("Current position as a FEN string:");
     console.log(board.fen());
-    $.get(fen);
     board.position(document.getElementById("loool").value, false);
 });
 
