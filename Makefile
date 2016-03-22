@@ -11,6 +11,7 @@ INC		=		./server/includes
 CXXFLAGS	=		-I./$(INC) --std=c++11 -g3
 
 SRCS		=		$(SRC)/Server.cpp \
+				$(SRC)/FEN.cpp \
 				$(SRC)/Session.cpp \
 				$(SRC)/main.cpp
 

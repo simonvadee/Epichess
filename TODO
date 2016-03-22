@@ -3,8 +3,8 @@ make git repo
 server side :
 
 - parse http request and send appropriate data :
-  	- get / ==> return HTML content
-	- get /xxx.js ==> return script 'js/xxx.js'
+  	- get / ==> return HTML content OK
+	- get /xxx.js ==> return script 'js/xxx.js' OK
 	- get FEN notation (ajax request) ==> send back FEN notation with new game state
 
 - calc move from board
