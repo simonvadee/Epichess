@@ -36,9 +36,13 @@ var onSnapEnd = function() {
     console.log("Current position as a FEN string:");
     console.log(board.fen());
     $.get(fen, function(data, status) {
-	var fen = data.split(' ');
+	var fen = data.split('-');
 	console.log("received : ", fen);
-	board.position(fen[0]);
+	game.move({
+	    from: fen[0],
+	    to: fen[1],
+	});
+	board.move(data);
 	updateStatus();
     });
 };

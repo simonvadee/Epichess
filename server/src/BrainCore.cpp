@@ -1,5 +1,6 @@
 #include "BrainCore.hh"
 
+#include <cstring>
 #include <iostream>
 #include <string>
 
@@ -79,8 +80,18 @@ void			BrainCore::fillMap(char pawn)
 char*			BrainCore::genMoveCode()
 {
   std::string		str;
+  char			a = _origin.x + 97;
+  char			b = _move.x + 97;
 
+  str += a;
+  str += std::to_string(8 - _origin.y);
+  str += "-";
 
+  str += b;
+  str += std::to_string(8 - _move.y);
+
+  std::cout << "strrr " << str << std::endl;
+  return strdup(str.c_str());
 }
 
 char*			BrainCore::genFenMap()
@@ -128,7 +139,7 @@ char*			BrainCore::fightBack(std::string const& coded)
   minMax(0, _map, true);
   // std::cout << "move : x " << static_cast<int>(_origin.x) << " , y " << static_cast<int>(_origin.y) << std::endl;
   // std::cout << "move : x " << static_cast<int>(_move.x) << " , y " << static_cast<int>(_move.y) << std::endl;
-  return genFenMap();
+  return genMoveCode();
 }
 
 int			BrainCore::minMax(int depth, char **map, bool turn)
@@ -141,7 +152,6 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
 
   _board->setMap(map);
   std::cout << "depth " << depth << std::endl;
-  // displayMap();
   if (depth == MAXDEPTH)
     return _board->evaluate();
 
@@ -170,12 +180,12 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
   if (depth == 0)
     {
       std::cout << "final" << std::endl;
-      // displayMap();
       _origin = origin;
       _move = move;
       _map[_move.y][_move.x] = map[_origin.y][_origin.x];
       _map[_origin.y][_origin.x] = 0;
       genFenMap();
+      genMoveCode();
     }
   return (best);
 }
