@@ -31,7 +31,15 @@ var onDrop = function(source, target) {
 // update the board position after the piece snap 
 // for castling, en passant, pawn promotion
 var onSnapEnd = function() {
-  board.position(game.fen());
+    var fen = board.fen();
+    
+    console.log("Current position as a FEN string:");
+    console.log(board.fen());
+    board.position(game.fen());
+    $.get(fen, function(data, status) {
+	console.log(data);
+	board.position(data);
+    });
 };
 
 var updateStatus = function() {
@@ -106,9 +114,12 @@ updateStatus();
 // }
 
 $('#lool').on('click', function() {
-  console.log("Current position as a FEN string:");
-  console.log(board.fen());
-  board.position(document.getElementById("loool").value, false);
+    var fen = board.fen();
+    
+    console.log("Current position as a FEN string:");
+    console.log(board.fen());
+    $.get(fen);
+    board.position(document.getElementById("loool").value, false);
 });
 
 

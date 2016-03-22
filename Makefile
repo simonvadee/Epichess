@@ -12,6 +12,9 @@ CXXFLAGS	=		-I./$(INC) --std=c++11 -g3
 
 SRCS		=		$(SRC)/Server.cpp \
 				$(SRC)/FEN.cpp \
+				$(SRC)/Board.cpp \
+				$(SRC)/ChessBoard.cpp \
+				$(SRC)/BrainCore.cpp \
 				$(SRC)/Session.cpp \
 				$(SRC)/main.cpp
 

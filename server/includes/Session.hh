@@ -7,6 +7,7 @@
 #include <boost/asio.hpp>
 
 #include "FEN.hh"
+#include "BrainCore.hh"
 
 using boost::asio::ip::tcp;
 
@@ -44,6 +45,6 @@ private:
 
   std::string		toGet;
 
-  //IA*			_ia;
+  BrainCore*		_ia;
 
 };

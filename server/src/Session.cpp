@@ -3,7 +3,7 @@
 using boost::asio::ip::tcp;
 
 Session::Session(tcp::socket socket)
-  : _socket(std::move(socket)), _response(NULL), _data(NULL)
+  : _socket(std::move(socket)), _response(NULL), _data(NULL), _ia(new BrainCore())
 {
 }
 
@@ -110,10 +110,9 @@ void			Session::play_ia(std::string const& fen)
       do_write(make_header("400 Bad Request"));
       return ;
     }
-  /*
-    _response = IA->play(fen);
-    do_write(make_header("200 OK"));
-   */
+  _response = _ia->fightBack(fen);
+  _responseLength = strlen(_response);
+  do_write(make_header("200 OK"));
 }
 
 size_t			Session::make_header(std::string const& status)

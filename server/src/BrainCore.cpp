@@ -32,7 +32,7 @@ BrainCore::~BrainCore()
 {
 }
 
-void			BrainCore::generate(char *coded)
+void			BrainCore::generate(std::string const& coded)
 {
   int			i = 0;
 
@@ -75,10 +75,11 @@ void			BrainCore::fillMap(char pawn)
     }
 }
 
-void			BrainCore::fenMap()
+char*			BrainCore::fenMap()
 {
   int			count = 0;
   std::string		str;
+  char*			ret;
 
   for (int i = 0; i < 8; i++)
     {
@@ -107,15 +108,19 @@ void			BrainCore::fenMap()
       if (i != 8)
 	str += "/";
     }
-  std::cout << str << std::endl;
+  std::cout << str.c_str() << std::endl;
+  ret = new char[str.length() + 1];
+  for (unsigned int i = 0; i != str.length() + 1; ++i) { ret[i] = str[i]; }
+  return ret;
 }
 
-void			BrainCore::fightBack(char *coded)
+char*			BrainCore::fightBack(std::string const& coded)
 {
   generate(coded);
   minMax(0, _map, true);
   std::cout << "move : x " << static_cast<int>(_origin.x) << " , y " << static_cast<int>(_origin.y) << std::endl;
   std::cout << "move : x " << static_cast<int>(_move.x) << " , y " << static_cast<int>(_move.y) << std::endl;
+  return fenMap();
 }
 
 int			BrainCore::minMax(int depth, char **map, bool turn)
