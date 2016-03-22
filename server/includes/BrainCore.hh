@@ -7,7 +7,7 @@
 # include "ChessBoard.hh"
 
 # define MAXINT 2147483647
-# define MAXDEPTH 1
+# define MAXDEPTH 3
 
 class BrainCore
 {
@@ -27,7 +27,8 @@ private:
 
 public:
   void			fillMap(char pawn);
-  char*			fenMap();
+  char*			genFenMap();
+  char*			genMoveCode();
   void			generate(std::string const&);
   char*			fightBack(std::string const& fen);
   int			minMax(int depth, char **map, bool turn);

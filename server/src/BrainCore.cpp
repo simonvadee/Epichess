@@ -76,7 +76,14 @@ void			BrainCore::fillMap(char pawn)
     }
 }
 
-char*			BrainCore::fenMap()
+char*			BrainCore::genMoveCode()
+{
+  std::string		str;
+
+
+}
+
+char*			BrainCore::genFenMap()
 {
   int			count = 0;
   std::string		str;
@@ -121,7 +128,7 @@ char*			BrainCore::fightBack(std::string const& coded)
   minMax(0, _map, true);
   std::cout << "move : x " << static_cast<int>(_origin.x) << " , y " << static_cast<int>(_origin.y) << std::endl;
   std::cout << "move : x " << static_cast<int>(_move.x) << " , y " << static_cast<int>(_move.y) << std::endl;
-  return fenMap();
+  return genFenMap();
 }
 
 int			BrainCore::minMax(int depth, char **map, bool turn)
@@ -129,10 +136,10 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
   Pos			move, origin;
   std::vector<Pos>	possibleMoves;
   std::vector<Pos>	pawns;
+  char			save;
   int			ret, best = (turn ? -MAXINT : MAXINT);
 
   _board->setMap(map);
-
   std::cout << "depth " << depth << std::endl;
   displayMap();
   if (depth == MAXDEPTH)
@@ -146,6 +153,7 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
       // std::cout << "possible Moves : " << possibleMoves.size() << std::endl;
       for (int j = 0; j < possibleMoves.size(); ++j)
 	{
+	  save = map[possibleMoves[j].y][possibleMoves[j].x];
 	  map[possibleMoves[j].y][possibleMoves[j].x] = map[pawns[i].y][pawns[i].x];
 	  map[pawns[i].y][pawns[i].x] = 0;
 	  ret = minMax(depth + 1, map, !turn);
@@ -156,7 +164,7 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
 	      origin = pawns[i];
 	    }
 	  map[pawns[i].y][pawns[i].x] = map[possibleMoves[j].y][possibleMoves[j].x];
-	  map[possibleMoves[j].y][possibleMoves[j].x] = 0;
+	  map[possibleMoves[j].y][possibleMoves[j].x] = save;
 	}
     }
   if (depth == 0)
@@ -167,7 +175,7 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
       _move = move;
       _map[_move.y][_move.x] = map[_origin.y][_origin.x];
       _map[_origin.y][_origin.x] = 0;
-  fenMap();
+      genFenMap();
     }
   return (best);
 }
