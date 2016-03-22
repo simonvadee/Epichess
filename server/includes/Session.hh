@@ -6,6 +6,8 @@
 #include <utility>
 #include <boost/asio.hpp>
 
+#include "FEN.hh"
+
 using boost::asio::ip::tcp;
 
 class Session
@@ -14,16 +16,20 @@ class Session
 public:
 
   Session(tcp::socket socket);
-  // ~Session();
+
   void			start();
 
 private:
+
+
+  void			set_content(std::string&);
+  void			play_ia(std::string const&);
 
   void			do_read();
   void			do_parse(std::size_t length);
   void			do_write(std::size_t length);
 
-  size_t		make_header();
+  size_t		make_header(std::string const& status);
 
 private:
 
@@ -37,4 +43,7 @@ private:
   char*			_data;
 
   std::string		toGet;
+
+  //IA*			_ia;
+
 };
