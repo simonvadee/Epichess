@@ -126,8 +126,8 @@ char*			BrainCore::fightBack(std::string const& coded)
 {
   generate(coded);
   minMax(0, _map, true);
-  std::cout << "move : x " << static_cast<int>(_origin.x) << " , y " << static_cast<int>(_origin.y) << std::endl;
-  std::cout << "move : x " << static_cast<int>(_move.x) << " , y " << static_cast<int>(_move.y) << std::endl;
+  // std::cout << "move : x " << static_cast<int>(_origin.x) << " , y " << static_cast<int>(_origin.y) << std::endl;
+  // std::cout << "move : x " << static_cast<int>(_move.x) << " , y " << static_cast<int>(_move.y) << std::endl;
   return genFenMap();
 }
 
@@ -141,7 +141,7 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
 
   _board->setMap(map);
   std::cout << "depth " << depth << std::endl;
-  displayMap();
+  // displayMap();
   if (depth == MAXDEPTH)
     return _board->evaluate();
 
@@ -170,7 +170,7 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
   if (depth == 0)
     {
       std::cout << "final" << std::endl;
-      displayMap();
+      // displayMap();
       _origin = origin;
       _move = move;
       _map[_move.y][_move.x] = map[_origin.y][_origin.x];

@@ -35,11 +35,11 @@ var onSnapEnd = function() {
     
     console.log("Current position as a FEN string:");
     console.log(board.fen());
-    board.position(game.fen());
     $.get(fen, function(data, status) {
-	console.log(data);
-	board.move("f7-f6");
-	// board.position(data);
+	var fen = data.split(' ');
+	console.log("received : ", fen);
+	board.position(fen[0]);
+	updateStatus();
     });
 };
 
