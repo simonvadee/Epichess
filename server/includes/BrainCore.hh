@@ -7,7 +7,7 @@
 # include "ChessBoard.hh"
 
 # define MAXINT 2147483647
-# define MAXDEPTH 5
+# define MAXDEPTH 1
 
 class BrainCore
 {

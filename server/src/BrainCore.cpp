@@ -13,6 +13,7 @@ BrainCore::BrainCore()
 
   _decode.assign(200, 200);
   _encode.assign(200, std::string("aa"));
+
   _decode['r'] = ROOK;
   _decode['n'] = KNIGHT;
   _decode['b'] = BISHOP;
@@ -105,7 +106,7 @@ char*			BrainCore::fenMap()
 	      count = 0;
 	    }
 	}
-      if (i != 8)
+      if (i != 7)
 	str += "/";
     }
   std::cout << str.c_str() << std::endl;
@@ -132,6 +133,8 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
 
   _board->setMap(map);
 
+  std::cout << "depth " << depth << std::endl;
+  displayMap();
   if (depth == MAXDEPTH)
     return _board->evaluate();
 
@@ -158,6 +161,7 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
     }
   if (depth == 0)
     {
+      std::cout << "final" << std::endl;
       displayMap();
       _origin = origin;
       _move = move;
