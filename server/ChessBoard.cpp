@@ -38,7 +38,6 @@ std::vector<Pos>	ChessBoard::findPossibleMoves(Pos& pos)
 {
   char			tmp = (_map[pos.y][pos.x] & 0x0f);
 
-  // std::cout << "pos x: " << pos.x << " , pos y: " << pos.y << "   val " << static_cast<int>(tmp) << std::endl;
   _possibleMoves.clear();
   switch (tmp)
     {
@@ -81,7 +80,7 @@ int			ChessBoard::evaluate()
 		{
 		  pos.x = i;
 		  pos.y = j;
-		  score -= isIsolatedBlockedDouble(pos, ((_map[i][j] & 0xf0) == MYSELF ? 1 : -1));
+		  score += isIsolatedBlockedDouble(pos, ((_map[i][j] & 0xf0) == MYSELF ? 1 : -1));
 		}
 	      else
 		score += evalMainPawns(pawn, ((_map[i][j] & 0xf0) == MYSELF ? 1 : -1));
@@ -115,15 +114,15 @@ int			ChessBoard::evalMainPawns(PAWNS pawn, int fact)
 
 int			ChessBoard::isIsolatedBlockedDouble(Pos& pos, int fact)
 {
-  int			res = -1;
+  int			res = 1;
   Pos			move;
 
   move.x = pos.x;
   move.y = pos.y + ((_turn & 0xf0) == MYSELF ? 1 : -1);
   if (isInMap(move) && _map[move.y][move.x] != EMPTY)
-    res += 0.5;
+    res -= 0.5;
   if (isInMap(move) && (_map[pos.y][pos.x] & 0xf0) == HUMAN && pos.y == 7 || (_map[pos.y][pos.x] & 0xf0) == MYSELF && pos.y == 1)
-    res += 0.5;
+    res -= 0.5;
   for (int i = 0; i < 8; ++i)
     {
       move.x = pos.x + _dir[i].x;
@@ -131,7 +130,7 @@ int			ChessBoard::isIsolatedBlockedDouble(Pos& pos, int fact)
       if (isInMap(move) && (_map[pos.y][pos.x] & 0xf0) == MYSELF)
 	return res * fact;
     }
-  res += 0.5;
+  res -= 0.5;
   return res * fact;
 }
 
@@ -166,9 +165,9 @@ bool			ChessBoard::isChessMate(Pos& pos)
     }
   for (int i = 0; i < 8; ++i)
     {
-      move.x = pos.x + _dir[i].x;
-      move.y = pos.y + _dir[i].y;
-      if (isInMap(move) && _map[move.y][move.x] != EMPTY && _map[move.y][move.x] & _turn && _map[move.y][move.x] == KNIGHT)
+      move.x = pos.x + _kdir[i].x;
+      move.y = pos.y + _kdir[i].y;
+      if (isInMap(move) && _map[move.y][move.x] != EMPTY && (_map[move.y][move.x] & 0xf0) == _turn && _map[move.y][move.x] == KNIGHT)
 	return true;
     }
   return false;
@@ -209,10 +208,9 @@ void			ChessBoard::findQueenMoves(Pos& pos)
 	{
 	  move.x = pos.x + _dir[i].x * j;
 	  move.y = pos.y + _dir[i].y * j;
-	  if (!isInMap(move))
+	  if (!isInMap(move) || (_map[move.y][move.x] & 0xf0) == _turn)
 	    break;
-	  if ((_map[move.y][move.x] & 0xf0) == _turn || _map[move.y][move.x] == EMPTY)
-	    _possibleMoves.push_back(move);
+	  _possibleMoves.push_back(move);
 	}
     }
 }
@@ -229,9 +227,9 @@ void			ChessBoard::findRookMoves(Pos& pos)
 	    {
 	      move.x = pos.x + _dir[i].x * j;
 	      move.y = pos.y + _dir[i].y * j;
-	      if (!isInMap(move))
+	      if (!isInMap(move) || (_map[move.y][move.x] & 0xf0) == _turn)
 		break;
-	      if ((_map[move.y][move.x] & 0xf0) == _turn || _map[move.y][move.x] == EMPTY)
+	      if (_map[move.y][move.x] == EMPTY)
 		_possibleMoves.push_back(move);
 	    }
 	}
@@ -250,10 +248,9 @@ void			ChessBoard::findBishopMoves(Pos& pos)
 	    {
 	      move.x = pos.x + _dir[i].x * j;
 	      move.y = pos.y + _dir[i].y * j;
-	      if (!isInMap(move))
+	      if (!isInMap(move) || (_map[move.y][move.x] & 0xf0) == _turn)
 		break;
-	      if ((_map[move.y][move.x] & 0xf0) == _turn || _map[move.y][move.x] == EMPTY)
-		_possibleMoves.push_back(move);
+	      _possibleMoves.push_back(move);
 	    }
 	}
     }
@@ -265,18 +262,12 @@ void			ChessBoard::findKnightMoves(Pos& pos)
 
   for (int i = 0; i < 8; ++i)
     {
-      if (i % 1 == 0)
-	{
-	  for (int j = 0; j < 8; ++j)
-	    {
-	      move.x = pos.x + _dir[i].x * j;
-	      move.y = pos.y + _dir[i].y * j;
-	      if (!isInMap(move))
-		break;
-	      if ((_map[move.y][move.x] & 0xf0) == _turn || _map[move.y][move.x] == EMPTY)
-		_possibleMoves.push_back(move);
-	    }
-	}
+      move.x = pos.x + _kdir[i].x;
+      move.y = pos.y + _kdir[i].y;
+      if (!isInMap(move))
+	continue;
+      if ((_map[move.y][move.x] & 0xf0) != _turn || _map[move.y][move.x] == EMPTY)
+	_possibleMoves.push_back(move);
     }
 }
 
@@ -295,5 +286,5 @@ void			ChessBoard::findPawnMoves(Pos& pos)
 
 bool			ChessBoard::isInMap(Pos& pos)
 {
-  return (pos.x > 0 && pos.x < 8 && pos.y > 0 && pos.y < 8);
+  return (pos.x >= 0 && pos.x < 8 && pos.y >= 0 && pos.y < 8);
 }
