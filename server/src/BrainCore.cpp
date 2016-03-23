@@ -151,7 +151,6 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
   int			ret, best = (turn ? -MAXINT : MAXINT);
 
   _board->setMap(map);
-  std::cout << "depth " << depth << std::endl;
   if (depth == MAXDEPTH)
     return _board->evaluate();
 

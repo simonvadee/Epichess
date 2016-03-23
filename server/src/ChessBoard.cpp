@@ -155,11 +155,11 @@ bool			ChessBoard::isChessMate(Pos& pos)
     {
       for (int j = 0; j < 8; ++j)
 	{
-	  move.x = pos.x + _dir[i].x;
-	  move.y = pos.y + _dir[i].y;
-	  if (!isInMap(move) || !((_map[move.y][move.x] & 0xf0) == _turn))
+	  move.x = pos.x + _dir[i].x * j;
+	  move.y = pos.y + _dir[i].y * j;
+	  if (!isInMap(move) || ((_map[move.y][move.x] & 0xf0) == _turn))
 	    break;
-	  if (_map[move.y][move.x] != EMPTY && isThreatning(static_cast<PAWNS>(_map[move.y][move.x]), i, j))
+	  if (_map[move.y][move.x] != EMPTY && isThreatning(static_cast<PAWNS>(_map[move.y][move.x] & 0x0f), i, j))
 	    return true;
 	}
     }
@@ -274,7 +274,7 @@ void			ChessBoard::findKnightMoves(Pos& pos)
 void			ChessBoard::findPawnMoves(Pos& pos)
 {
   Pos			move;
-  
+
   for (int i = 0; i < 3; ++i)
     {
       move.x = pos.x + i - 1;
