@@ -41,6 +41,7 @@ var onSnapEnd = function() {
 	game.move({
 	    from: fen[0],
 	    to: fen[1],
+	    promotion: 'q'
 	});
 	board.move(data);
 	updateStatus();
