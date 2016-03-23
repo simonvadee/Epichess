@@ -24,7 +24,7 @@ private:
   std::vector<Pos>	_possibleMoves;
 
 public:
-  std::vector<Pos>	findPossibleMoves(Pos& pos);
+  std::vector<Pos>&	findPossibleMoves(Pos& pos, int turn);
   int			evaluate();
 
 private:

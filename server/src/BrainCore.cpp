@@ -151,7 +151,6 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
   int			ret, best = (turn ? -MAXINT : MAXINT);
 
   _board->setMap(map);
-  std::cout << "depth " << depth << std::endl;
   if (depth == MAXDEPTH)
     return _board->evaluate();
 
@@ -159,7 +158,7 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
   // std::cout << "DEPTH : " << depth << "  , possible pawn : " << pawns.size() << std::endl;
   for (int i = 0; i < pawns.size(); ++i)
     {
-      possibleMoves = _board->findPossibleMoves(pawns[i]);
+      possibleMoves = _board->findPossibleMoves(pawns[i], turn ? MYSELF : HUMAN);
       // std::cout << "possible Moves : " << possibleMoves.size() << std::endl;
       for (int j = 0; j < possibleMoves.size(); ++j)
 	{

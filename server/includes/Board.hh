@@ -29,9 +29,10 @@ public:
 protected:
   char**		_map;
   int			_turn;
+  std::vector<Pos>	_pawns;
 
 public:
-  std::vector<Pos>	findPossibleActors(int turn);
+  std::vector<Pos>&	findPossibleActors(int turn);
   void			setMap(char **map);
 };
 
