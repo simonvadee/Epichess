@@ -26,18 +26,17 @@ Pos _kdir[8] =
 
 ChessBoard::ChessBoard()
 {
-
 }
 
 ChessBoard::~ChessBoard()
 {
-
 }
 
-std::vector<Pos>	ChessBoard::findPossibleMoves(Pos& pos)
+std::vector<Pos>&	ChessBoard::findPossibleMoves(Pos& pos, int turn)
 {
   char			tmp = (_map[pos.y][pos.x] & 0x0f);
 
+  _turn = turn;
   _possibleMoves.clear();
   switch (tmp)
     {
@@ -153,7 +152,7 @@ bool			ChessBoard::isChessMate(Pos& pos)
 
   for (int i = 0; i < 8; ++i)
     {
-      for (int j = 0; j < 8; ++j)
+      for (int j = 1; j < 8; ++j)
 	{
 	  move.x = pos.x + _dir[i].x * j;
 	  move.y = pos.y + _dir[i].y * j;
@@ -204,13 +203,16 @@ void			ChessBoard::findQueenMoves(Pos& pos)
 
   for (int i = 0; i < 8; ++i)
     {
-      for (int j = 0; j < 8; ++j)
+      for (int j = 1; j < 8; ++j)
 	{
 	  move.x = pos.x + _dir[i].x * j;
 	  move.y = pos.y + _dir[i].y * j;
+
 	  if (!isInMap(move) || (_map[move.y][move.x] & 0xf0) == _turn)
 	    break;
 	  _possibleMoves.push_back(move);
+	  if (_map[move.y][move.x] != EMPTY)
+	    break;
 	}
     }
 }
@@ -223,14 +225,15 @@ void			ChessBoard::findRookMoves(Pos& pos)
     {
       if (i % 2 == 0)
 	{
-	  for (int j = 0; j < 8; ++j)
+	  for (int j = 1; j < 8; ++j)
 	    {
 	      move.x = pos.x + _dir[i].x * j;
 	      move.y = pos.y + _dir[i].y * j;
 	      if (!isInMap(move) || (_map[move.y][move.x] & 0xf0) == _turn)
 		break;
-	      if (_map[move.y][move.x] == EMPTY)
-		_possibleMoves.push_back(move);
+	      _possibleMoves.push_back(move);
+	      if (_map[move.y][move.x] != EMPTY)
+		break;
 	    }
 	}
     }
@@ -242,15 +245,17 @@ void			ChessBoard::findBishopMoves(Pos& pos)
 
   for (int i = 0; i < 8; ++i)
     {
-      if (i % 1 == 0)
+      if (i % 2 == 1)
 	{
-	  for (int j = 0; j < 8; ++j)
+	  for (int j = 1; j < 8; ++j)
 	    {
 	      move.x = pos.x + _dir[i].x * j;
 	      move.y = pos.y + _dir[i].y * j;
 	      if (!isInMap(move) || (_map[move.y][move.x] & 0xf0) == _turn)
 		break;
 	      _possibleMoves.push_back(move);
+	      if (_map[move.y][move.x] != EMPTY)
+		break;
 	    }
 	}
     }
@@ -279,7 +284,7 @@ void			ChessBoard::findPawnMoves(Pos& pos)
     {
       move.x = pos.x + i - 1;
       move.y = pos.y + ((_turn & 0xf0) == MYSELF ? 1 : -1);
-      if (isInMap(move) && ((_map[move.y][move.x] == EMPTY && i == 1) || (i != 1 && _map[move.y][move.x]!= EMPTY && (_map[move.y][move.x] & 0xf0) != _turn)))
+      if (isInMap(move) && ((_map[move.y][move.x] == EMPTY && i == 1) || (i != 1 && _map[move.y][move.x] != EMPTY && (_map[move.y][move.x] & 0xf0) != _turn)))
 	_possibleMoves.push_back(move);
     }
 }
