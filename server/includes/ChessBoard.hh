@@ -33,6 +33,7 @@ private:
   bool			isChessMate(Pos& pos);
   int			isIsolatedBlockedDouble(Pos& pos, int fact);
   int			evalMainPawns(PAWNS pawn, int fact);
+  int			getMobility(int turn);
 
   void			findKingMoves(Pos& pos);
   void			findQueenMoves(Pos& pos);

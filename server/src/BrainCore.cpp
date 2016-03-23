@@ -137,8 +137,6 @@ char*			BrainCore::fightBack(std::string const& coded)
 {
   generate(coded);
   minMax(0, _map, true);
-  // std::cout << "move : x " << static_cast<int>(_origin.x) << " , y " << static_cast<int>(_origin.y) << std::endl;
-  // std::cout << "move : x " << static_cast<int>(_move.x) << " , y " << static_cast<int>(_move.y) << std::endl;
   return genMoveCode();
 }
 
@@ -155,11 +153,9 @@ int			BrainCore::minMax(int depth, char **map, bool turn)
     return _board->evaluate();
 
   pawns = _board->findPossibleActors(turn ? MYSELF : HUMAN);
-  // std::cout << "DEPTH : " << depth << "  , possible pawn : " << pawns.size() << std::endl;
   for (int i = 0; i < pawns.size(); ++i)
     {
       possibleMoves = _board->findPossibleMoves(pawns[i], turn ? MYSELF : HUMAN);
-      // std::cout << "possible Moves : " << possibleMoves.size() << std::endl;
       for (int j = 0; j < possibleMoves.size(); ++j)
 	{
 	  save = map[possibleMoves[j].y][possibleMoves[j].x];

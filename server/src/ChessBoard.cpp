@@ -86,7 +86,19 @@ int			ChessBoard::evaluate()
 	    }
 	}
     }
-  return score;
+  return score + (getMobility(MYSELF) - getMobility(HUMAN)) / 10;
+}
+
+int			ChessBoard::getMobility(int turn)
+{
+  int			ret = 0;
+  std::vector<Pos>	pawns;
+  std::vector<Pos>	moves;
+  
+  pawns = findPossibleActors(turn);
+  for (int i = 0; i < pawns.size(); ++i)
+    ret += findPossibleMoves(pawns[i], turn).size();
+  return ret;
 }
 
 int			ChessBoard::evalMainPawns(PAWNS pawn, int fact)

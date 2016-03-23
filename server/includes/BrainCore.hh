@@ -16,23 +16,23 @@ public:
   ~BrainCore();
 
 private:
-  ChessBoard*		_board;
-  char**		_map;
-  std::vector<Pos>	_pawns;
-  Pos			_origin;
-  Pos			_move;
-  std::vector<int>	_decode;
+  ChessBoard*			_board;
+  char**			_map;
+  std::vector<Pos>		_pawns;
+  Pos				_origin;
+  Pos				_move;
+  std::vector<int>		_decode;
   std::vector<std::string>	_encode;
-  Pos			_actual;
+  Pos				_actual;
 
 public:
-  void			fillMap(char pawn);
-  char*			genFenMap();
-  char*			genMoveCode();
-  void			generate(std::string const&);
-  char*			fightBack(std::string const& fen);
-  int			minMax(int depth, char **map, bool turn);
-  void			displayMap();
+  void				fillMap(char pawn);
+  char*				genFenMap();
+  char*				genMoveCode();
+  void				generate(std::string const&);
+  char*				fightBack(std::string const& fen);
+  int				minMax(int depth, char **map, bool turn);
+  void				displayMap();
 };
 
 #endif
